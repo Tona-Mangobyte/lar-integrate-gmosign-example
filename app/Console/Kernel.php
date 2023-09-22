@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('demo:cron')->everyMinute();
         // $schedule->command('command:SimpleBatch')->cron("*/1 * * * *")->runInBackground();
         print_r("execute schedule");
+        $schedule->command('demo:cron')
     }
 
     /**
