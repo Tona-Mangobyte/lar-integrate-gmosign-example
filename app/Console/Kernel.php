@@ -25,9 +25,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('command:SimpleBatch')->everyMinute();
         $schedule->command('demo:cron')->everyMinute();
-        // $schedule->command('command:SimpleBatch')->cron("*/1 * * * *")->runInBackground();
         print_r("execute schedule");
-        $schedule->command('demo:cron')
     }
 
     /**
