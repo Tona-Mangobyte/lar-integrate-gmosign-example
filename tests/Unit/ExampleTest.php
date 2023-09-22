@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Closure;
 use GuzzleHttp\Client;
@@ -14,7 +15,12 @@ class ExampleTest extends TestCase
      */
     public function test_that_true_is_true(): void
     {
-        $resp = $this->requestApi("/v1/articles", function ($currentObj) {
+        $this->makeRequest("/v1/articles", "GET");
+        $this->assertTrue(true);
+    }
+
+    private function makeRequest($uri, $method) {
+        $resp = $this->requestApi($uri, $method, function ($currentObj) {
             if ($currentObj->isTokenExpired("2023/09/24")) {
                 echo "token is expired" . PHP_EOL;
                 $resp = $currentObj->requestTokenAccess();
@@ -25,16 +31,16 @@ class ExampleTest extends TestCase
         });
         if ($resp->getStatusCode() === 200) {
             echo "response successfully" . PHP_EOL;
+            return $resp;
         }
-        $this->assertTrue(true);
+        return null;
     }
 
-    private function requestApi($uri, Closure $callback = null) {
+    private function requestApi($uri, $method = "GET", Closure $callback = null) {
         if (!is_null($callback)) {
             $callback($this);
         }
-        $client = new Client();
-        return $client->request('GET', $uri, [
+        return (new Client())->request($method, $uri, [
             'verify' => false
         ]);
     }
